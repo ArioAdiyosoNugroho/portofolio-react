@@ -55,7 +55,7 @@ export default function Hero() {
           </div>
           {/* stat card top-right */}
           <div className="float-card absolute -top-5 -right-5 bg-white border border-slate-100 rounded-2xl shadow-float p-5 min-w-[180px] z-20">
-            <div className="font-display text-3xl font-extrabold text-brand-dark">250+</div>
+            <div className="font-display text-3xl font-extrabold text-brand-dark">50+</div>
             <div className="text-xs font-medium text-slate-400 mt-1">Klien Puas</div>
             <div className="flex items-center mt-3">
               <span className="w-8 h-8 rounded-full border-2 border-white bg-primary flex items-center justify-center text-[10px] font-bold text-white" />
