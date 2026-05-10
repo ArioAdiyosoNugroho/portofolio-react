@@ -55,7 +55,7 @@ function ZoomParallax({ images }) {
 const portfolioImages = [
   // main foto
   { 
-    src: 'public/assets/img/web/web1.png', 
+    src: '/assets/img/web/web1.png',
     alt: 'Brand & Identity System',
   },
   {
