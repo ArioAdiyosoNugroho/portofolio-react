@@ -99,24 +99,38 @@ function PortfolioHeader() {
 }
 
 // ── Portfolio footer CTA ───────────────────────────────────────────────────────
+// ── Portfolio footer CTA (Revisi agar tidak terlihat kosong) ───────────────────
 function PortfolioFooter() {
   return (
-    <div className="flex flex-col items-center justify-center py-24 bg-gray-950 text-white text-center px-6">
-    <a                      
-        href="portfolio.html"
-        className="inline-flex items-center bg-white text-gray-900 rounded-full pl-6 pr-2 py-2 gap-4 hover:bg-gray-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group"
-      >
-        <span className="text-sm font-semibold tracking-wide">Semua proyek</span>
-        <span className="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center shrink-0 group-hover:scale-95 transition-transform duration-300">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </span>
-      </a>
+    <div className="relative flex flex-col items-center justify-center py-32 bg-gray-950 text-white text-center px-6 overflow-hidden">
+      
+      {/* Dekorasi Visual: Gradient Glow agar tidak terlalu "flat" hitam */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="relative z-10 max-w-2xl">
+        <h3 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight">
+          Punya ide luar biasa? <br/> Mari kita wujudkan bersama.
+        </h3>
+        <p className="text-gray-400 mb-10 text-sm md:text-base leading-relaxed">
+          Setiap proyek adalah cerita baru. Kami menggabungkan strategi data 
+          dengan kreativitas komunitas untuk hasil yang berdampak nyata.
+        </p>
+
+        <a                        
+          href="portfolio.html"
+          className="inline-flex items-center bg-white text-gray-900 rounded-full pl-6 pr-2 py-2 gap-4 hover:bg-gray-100 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1 transition-all duration-300 group"
+        >
+          <span className="text-sm font-bold tracking-wide">Lihat Semua Proyek</span>
+          <span className="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center shrink-0 group-hover:rotate-[-45deg] transition-transform duration-300">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </span>
+        </a>
+      </div>
     </div>
   );
 }
-
 // ── Main export ────────────────────────────────────────────────────────────────
 export default function Portfolio() {
   return (
