@@ -38,10 +38,6 @@ export default function About() {
             Anggap kami sebagai perpanjangan tim kamu, siap mewujudkan ide-idemu dengan presisi, kreativitas, dan semangat.
           </p>
           <div className="bg-brand-dark rounded-2xl px-8 py-7 mt-8 flex flex-wrap items-center justify-between gap-5">
-            <div>
-              <div className="font-display text-5xl font-extrabold text-white leading-none">40%</div>
-              <div className="text-sm text-white/40 mt-1">Rata-rata peningkatan revenue klien</div>
-            </div>
             <div className="flex flex-wrap gap-2 max-w-[260px]">
               {['Creative Developer', 'Scalable Web Apps', 'Cross-platform Dev', 'System Design'].map(tag => (
                 <span key={tag} className="border border-white/15 bg-white/5 text-white/70 rounded-full px-4 py-1.5 text-[0.8125rem]">{tag}</span>

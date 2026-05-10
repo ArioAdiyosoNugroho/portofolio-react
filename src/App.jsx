@@ -1,6 +1,6 @@
 import Navbar       from './components/Navbar'
 import Hero          from './components/Hero'
-import TrustBar      from './components/TrustBar'
+// import TrustBar      from './components/TrustBar'
 import About         from './components/About'
 import Services      from './components/Services'
 import Skills        from './components/Skills'
@@ -18,7 +18,7 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
-        <TrustBar />
+        {/* <TrustBar /> */}
         <About />
         {/* <Scroll /> */}
         <Services />

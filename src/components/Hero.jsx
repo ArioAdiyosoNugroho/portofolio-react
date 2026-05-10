@@ -19,7 +19,7 @@ export default function Hero() {
           >
             <span>MEMBANGUN WEBSITE</span><br />
             <span className="text-primary">MODERN</span><br />
-            <span>YANG MENGKONVERSI</span>
+            <span>YANG LUARBIASA</span>
           </h1>
           <p className="text-lg text-slate-500 leading-relaxed max-w-md mb-10 font-body">
             Tingkatkan brand kamu dengan solusi desain terbaik. Dari branding hingga UI, kami wujudkan visimu dengan layanan digital yang dipersonalisasi.
@@ -64,11 +64,6 @@ export default function Hero() {
             </div>
           </div>
           {/* stat card bottom-left */}
-          <div className="float-card float-card-delay absolute -bottom-5 -left-5 bg-white border border-slate-100 rounded-2xl shadow-float p-5 min-w-[180px] z-20">
-            <div className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest mb-1">Growth Rate</div>
-            <div className="font-display text-4xl font-extrabold text-primary">40%</div>
-            <div className="text-xs font-medium text-slate-400 mt-1">Peningkatan Revenue</div>
-          </div>
         </div>
       </div>
 

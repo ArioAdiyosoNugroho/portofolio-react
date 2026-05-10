@@ -1,9 +1,8 @@
 export default function TrustBar() {
   const stats = [
-    { value: '250+', label: 'Klien Puas', color: 'text-brand-dark' },
+    { value: '50+', label: 'Klien Puas', color: 'text-brand-dark' },
     { value: '3+',   label: 'Tahun Pengalaman', color: 'text-primary' },
-    { value: '300+', label: 'Proyek Selesai', color: 'text-brand-dark' },
-    { value: '40%',  label: 'Rata-rata Peningkatan Revenue', color: 'text-primary' },
+    { value: '50+', label: 'Proyek Selesai', color: 'text-brand-dark' },
   ]
 
   return (
