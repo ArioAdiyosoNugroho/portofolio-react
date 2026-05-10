@@ -53,8 +53,9 @@ function ZoomParallax({ images }) {
 
 // ── Portfolio images (7 max) ───────────────────────────────────────────────────
 const portfolioImages = [
-  {
-    src: 'https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=1280&h=720&fit=crop&auto=format&q=80',
+  // main foto
+  { 
+    src: 'public/assets/img/web/web1.png', 
     alt: 'Brand & Identity System',
   },
   {
