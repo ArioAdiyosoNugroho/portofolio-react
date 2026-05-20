@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-// ─── Brand tokens ─────────────────────────────────────────────────────────────
 const B = {
   teal:       '#1a7a8a',
   tealDark:   '#0f5c6b',
@@ -13,17 +13,7 @@ const B = {
   grey:       '#6b7280',
 }
 
-// ─── Mobile BubbleMenu overlay ────────────────────────────────────────────────
-const MOBILE_ITEMS = [
-  { label: 'Home',      href: '#home',      hoverStyles: { bgColor: B.teal,       textColor: '#fff' } },
-  { label: 'Tentang',   href: '#about',     hoverStyles: { bgColor: B.tealDark,   textColor: '#fff' } },
-  { label: 'Layanan',   href: '#services',  hoverStyles: { bgColor: B.tealDarker, textColor: '#fff' } },
-  { label: 'Portfolio', href: '#portfolio', hoverStyles: { bgColor: B.teal,       textColor: '#fff' } },
-  { label: 'Harga',     href: '#pricing',   hoverStyles: { bgColor: B.accent,     textColor: B.dark } },
-  { label: 'Kontak',    href: '#contact',   hoverStyles: { bgColor: B.dark,       textColor: '#fff' } },
-]
-
-function MobileBubbleMenu({ isOpen, onClose }) {
+function MobileBubbleMenu({ isOpen, onClose, items }) {
   const overlayRef = useRef(null)
   const bubblesRef = useRef([])
   const labelRefs  = useRef([])
@@ -71,7 +61,7 @@ function MobileBubbleMenu({ isOpen, onClose }) {
       style={{
         position: 'fixed', inset: 0, zIndex: 49,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: `rgba(11,18,20,0.92)`,
+        background: 'rgba(11,18,20,0.92)',
         backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
         padding: '100px 20px 48px',
       }}
@@ -81,14 +71,14 @@ function MobileBubbleMenu({ isOpen, onClose }) {
         display: 'flex', flexWrap: 'wrap', gap: 10,
         width: '100%', maxWidth: 400, justifyContent: 'center',
       }}>
-        {MOBILE_ITEMS.map((item, idx) => (
+        {items.map((item, idx) => (
           <li key={idx} style={{ flex: '0 0 calc(50% - 5px)', display: 'flex' }}>
             <a
               href={item.href}
               ref={el => { if (el) bubblesRef.current[idx] = el }}
               onClick={e => {
                 e.preventDefault(); onClose()
-                setTimeout(() => { document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' }) }, 340)
+                setTimeout(() => item.onClick(), 340)
               }}
               onPointerEnter={e => {
                 Object.assign(e.currentTarget.style, {
@@ -136,7 +126,6 @@ function MobileBubbleMenu({ isOpen, onClose }) {
   )
 }
 
-// ─── HamburgerIcon ────────────────────────────────────────────────────────────
 function HamburgerIcon({ isOpen }) {
   const l1 = useRef(null)
   const l2 = useRef(null)
@@ -160,84 +149,109 @@ function HamburgerIcon({ isOpen }) {
   )
 }
 
-// ─── Main Navbar ──────────────────────────────────────────────────────────────
 export default function Navbar() {
-  const [scrolled,    setScrolled]    = useState(false)
-  const [mousePos,    setMousePos]    = useState({ x: 0, y: 0 })
-  const [isHovered,   setIsHovered]   = useState(false)
-  const [mobileOpen,  setMobileOpen]  = useState(false)
-  const [isMobile,    setIsMobile]    = useState(false)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const isHome = location.pathname === '/'
+
+  const [scrolled,   setScrolled]   = useState(() => !isHome || (typeof window !== 'undefined' && window.scrollY > 50))
+  const [mousePos,   setMousePos]   = useState({ x: 0, y: 0 })
+  const [isHovered,  setIsHovered]  = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [isMobile,   setIsMobile]   = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(max-width: 768px)').matches
+  })
   const navRef = useRef(null)
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 768)
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
+    const mq = window.matchMedia('(max-width: 768px)')
+    setIsMobile(mq.matches)
+    const handler = (e) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
   }, [])
+
+  useEffect(() => {
+    setScrolled(!isHome || window.scrollY > 50)
+  }, [isHome])
 
   useEffect(() => {
     let ticking = false
     const onScroll = () => {
       if (!ticking) {
-        requestAnimationFrame(() => { setScrolled(window.scrollY > 50); ticking = false })
+        requestAnimationFrame(() => {
+          setScrolled(!isHome || window.scrollY > 50)
+          ticking = false
+        })
         ticking = true
       }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [isHome])
 
   useEffect(() => { if (!isMobile) setMobileOpen(false) }, [isMobile])
 
   const handleAnchorClick = (e, href) => {
     e.preventDefault()
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    if (isHome) {
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      navigate('/' + href)
+    }
   }
 
   const navLinks = [
-    { href: '#home',      label: 'Home' },
-    { href: '#about',     label: 'Tentang' },
-    { href: '#services',  label: 'Layanan' },
-    { href: '#portfolio', label: 'Portfolio' },
-    { href: '#pricing',   label: 'Harga' },
+    { href: '#home',      label: 'Home',      page: '/' },
+    { href: '#about',     label: 'Tentang',   page: '/' },
+    { href: '#services',  label: 'Layanan',   page: '/' },
+    { href: '#portfolio', label: 'Portfolio', page: '/portfolio' },
+    { href: '#pricing',   label: 'Harga',     page: '/' },
   ]
 
+  // Wrapper: saat scrolled=false (paling atas homepage), navbar full-width TANPA padding
+  // tapi background putih penuh menutupi area atas
+  // Saat scrolled=true, jadi floating pill dengan padding
   const wrapperStyle = {
     position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
     display: 'flex', justifyContent: 'center',
-    padding: scrolled ? '14px 20px' : '0',
-    transition: 'padding 0.5s cubic-bezier(0.4,0,0.2,1)',
+    // KUNCI: background putih saat !scrolled agar area atas tidak transparan
+    background: scrolled ? 'transparent' : 'rgba(255,255,255,0.97)',
+    paddingTop:    scrolled ? (isMobile ? '12px' : '14px') : '0',
+    paddingLeft:   scrolled ? (isMobile ? '12px' : '20px') : '0',
+    paddingRight:  scrolled ? (isMobile ? '12px' : '20px') : '0',
+    paddingBottom: '0',
+    transition: 'padding 0.5s cubic-bezier(0.4,0,0.2,1), background 0.5s cubic-bezier(0.4,0,0.2,1)',
   }
 
   const barStyle = scrolled ? {
-    // Floating glass pill
-    width: '100%', maxWidth: 880, borderRadius: 9999,
-    background: 'rgba(255,255,255,0.82)',
+    width: '100%', maxWidth: isMobile ? '100%' : 880, borderRadius: 9999,
+    background: 'rgba(255,255,255,0.88)',
     backdropFilter: 'blur(28px) saturate(180%)',
     WebkitBackdropFilter: 'blur(28px) saturate(180%)',
     border: '1px solid rgba(26,122,138,0.15)',
-    boxShadow: `0 8px 32px rgba(26,122,138,0.10), 0 1px 0 rgba(255,255,255,0.9) inset`,
+    boxShadow: '0 8px 32px rgba(26,122,138,0.10), 0 1px 0 rgba(255,255,255,0.9) inset',
     position: 'relative', overflow: 'hidden',
     transition: 'all 0.5s cubic-bezier(0.4,0,0.2,1)',
   } : {
-    // Solid top bar
     width: '100%', maxWidth: '100%', borderRadius: 0,
-    background: 'rgba(255,255,255,0.96)',
-    backdropFilter: 'blur(8px)',
-    WebkitBackdropFilter: 'blur(8px)',
+    background: 'transparent',
+    position: 'relative', overflow: 'hidden',
     borderBottom: '1px solid rgba(26,122,138,0.1)',
     boxShadow: '0 1px 0 rgba(0,0,0,0.03)',
-    position: 'relative', overflow: 'hidden',
     transition: 'all 0.5s cubic-bezier(0.4,0,0.2,1)',
   }
 
   const innerStyle = {
     position: 'relative', zIndex: 2,
-    maxWidth: 1200, margin: '0 auto',
+    width: '100%', maxWidth: isMobile ? '100%' : 1200, margin: '0 auto',
     display: 'flex', alignItems: 'center',
-    justifyContent: 'space-between', gap: 16,
-    padding: scrolled ? '10px 22px' : '13px 24px',
+    justifyContent: 'space-between',
+    gap: 16,
+    padding: scrolled
+      ? (isMobile ? '10px 16px' : '10px 22px')
+      : (isMobile ? '12px 16px' : '13px 24px'),
     transition: 'padding 0.5s cubic-bezier(0.4,0,0.2,1)',
   }
 
@@ -251,7 +265,18 @@ export default function Navbar() {
         }
       `}</style>
 
-      <MobileBubbleMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileBubbleMenu
+        isOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        items={[
+          { href: '/',          label: 'Home',      hoverStyles: { bgColor: B.teal,       textColor: '#fff' }, onClick: () => navigate('/') },
+          { href: '/',          label: 'Tentang',   hoverStyles: { bgColor: B.tealDark,   textColor: '#fff' }, onClick: () => isHome ? document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' }) : navigate('/') },
+          { href: '/',          label: 'Layanan',   hoverStyles: { bgColor: B.tealDarker, textColor: '#fff' }, onClick: () => isHome ? document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' }) : navigate('/') },
+          { href: '/portfolio', label: 'Portfolio', hoverStyles: { bgColor: B.teal,       textColor: '#fff' }, onClick: () => navigate('/portfolio') },
+          { href: '/',          label: 'Harga',     hoverStyles: { bgColor: B.accent,     textColor: B.dark }, onClick: () => isHome ? document.querySelector('#pricing')?.scrollIntoView({ behavior: 'smooth' }) : navigate('/') },
+          { href: '/',          label: 'Kontak',    hoverStyles: { bgColor: B.dark,       textColor: '#fff' }, onClick: () => isHome ? document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }) : navigate('/') },
+        ]}
+      />
 
       <div style={wrapperStyle}>
         <header
@@ -266,16 +291,14 @@ export default function Navbar() {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Teal shimmer (scrolled only) */}
           {scrolled && (
             <div style={{
               position: 'absolute', inset: 0, pointerEvents: 'none',
-              background: `linear-gradient(105deg, transparent 38%, rgba(26,122,138,0.06) 50%, rgba(253,178,19,0.05) 56%, transparent 66%)`,
+              background: 'linear-gradient(105deg, transparent 38%, rgba(26,122,138,0.06) 50%, rgba(253,178,19,0.05) 56%, transparent 66%)',
               animation: 'shimmer 7s ease-in-out infinite',
             }} />
           )}
 
-          {/* Top accent line */}
           {scrolled && (
             <div style={{
               position: 'absolute', top: 0, left: '8%', right: '8%',
@@ -284,7 +307,6 @@ export default function Navbar() {
             }} />
           )}
 
-          {/* Mouse glow blob — teal */}
           {scrolled && isHovered && (
             <div style={{
               position: 'absolute', pointerEvents: 'none', borderRadius: '50%',
@@ -296,44 +318,43 @@ export default function Navbar() {
 
           <div style={innerStyle}>
 
-            {/* ── Logo ── */}
             <a
-              href="#home"
-              onClick={e => handleAnchorClick(e, '#home')}
+              href={isHome ? '#home' : '/'}
+              onClick={e => {
+                e.preventDefault()
+                if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
+                else navigate('/')
+              }}
               aria-label="ArioAdi home"
               style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0 }}
             >
               <div style={{
                 width: 38, height: 38, borderRadius: 12, flexShrink: 0,
-                background: B.tealLight,
-                border: `1px solid ${B.teal}33`,
+                background: B.tealLight, border: `1px solid ${B.teal}33`,
                 overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <img src="/assets/img/dev.png" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <span style={{
                 fontFamily: "'Plus Jakarta Sans',sans-serif",
-                fontSize: 18, fontWeight: 800,
-                letterSpacing: '-0.03em',
-                color: B.dark,
-                lineHeight: 1, whiteSpace: 'nowrap',
+                fontSize: 18, fontWeight: 800, letterSpacing: '-0.03em',
+                color: B.dark, lineHeight: 1, whiteSpace: 'nowrap',
               }}>
                 Ario<span style={{ color: B.teal }}>Adi</span>
               </span>
             </a>
 
-            {/* ── Desktop nav links ── */}
             {!isMobile && (
               <nav aria-label="Main navigation">
-                <ul style={{
-                  display: 'flex', alignItems: 'center', gap: 2,
-                  listStyle: 'none', margin: 0, padding: 0,
-                }}>
-                  {navLinks.map(({ href, label }) => (
+                <ul style={{ display: 'flex', alignItems: 'center', gap: 2, listStyle: 'none', margin: 0, padding: 0 }}>
+                  {navLinks.map(({ href, label, page }) => (
                     <li key={href}>
                       <a
-                        href={href}
-                        onClick={e => handleAnchorClick(e, href)}
+                        href={page === '/portfolio' ? '/portfolio' : href}
+                        onClick={e => {
+                          if (page === '/portfolio') { e.preventDefault(); navigate('/portfolio') }
+                          else handleAnchorClick(e, href)
+                        }}
                         style={{
                           display: 'block', padding: '6px 13px', borderRadius: 9999,
                           textDecoration: 'none', fontSize: 13.5, fontWeight: 500,
@@ -341,14 +362,8 @@ export default function Navbar() {
                           transition: 'color 0.2s, background 0.2s',
                           fontFamily: "'Inter',sans-serif",
                         }}
-                        onMouseEnter={e => Object.assign(e.currentTarget.style, {
-                          color: B.teal,
-                          background: `${B.teal}12`,
-                        })}
-                        onMouseLeave={e => Object.assign(e.currentTarget.style, {
-                          color: B.grey,
-                          background: 'transparent',
-                        })}
+                        onMouseEnter={e => Object.assign(e.currentTarget.style, { color: B.teal, background: `${B.teal}12` })}
+                        onMouseLeave={e => Object.assign(e.currentTarget.style, { color: B.grey, background: 'transparent' })}
                       >
                         {label}
                       </a>
@@ -358,41 +373,32 @@ export default function Navbar() {
               </nav>
             )}
 
-            {/* ── Right side ── */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0, marginLeft: 'auto' }}>
-
-              {/* Desktop CTA */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0, marginLeft: isMobile ? '0' : 'auto' }}>
               {!isMobile && (
                 <a
-                  href="#contact"
-                  onClick={e => handleAnchorClick(e, '#contact')}
+                  href={isHome ? '#contact' : '/'}
+                  onClick={e => {
+                    e.preventDefault()
+                    if (isHome) document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
+                    else navigate('/')
+                  }}
                   style={{
                     display: 'inline-flex', alignItems: 'center',
                     padding: '9px 20px', borderRadius: 9999,
                     background: B.teal, color: '#fff',
-                    fontSize: 13, fontWeight: 600,
-                    letterSpacing: '-0.01em', textDecoration: 'none',
-                    border: `1px solid ${B.tealDark}`,
+                    fontSize: 13, fontWeight: 600, letterSpacing: '-0.01em',
+                    textDecoration: 'none', border: `1px solid ${B.tealDark}`,
                     boxShadow: `0 2px 12px ${B.teal}40`,
                     transition: 'all 0.25s ease',
                     fontFamily: "'Inter',sans-serif", whiteSpace: 'nowrap',
                   }}
-                  onMouseEnter={e => Object.assign(e.currentTarget.style, {
-                    background: B.tealDark,
-                    boxShadow: `0 4px 20px ${B.teal}55`,
-                    transform: 'translateY(-1px)',
-                  })}
-                  onMouseLeave={e => Object.assign(e.currentTarget.style, {
-                    background: B.teal,
-                    boxShadow: `0 2px 12px ${B.teal}40`,
-                    transform: 'translateY(0)',
-                  })}
+                  onMouseEnter={e => Object.assign(e.currentTarget.style, { background: B.tealDark, boxShadow: `0 4px 20px ${B.teal}55`, transform: 'translateY(-1px)' })}
+                  onMouseLeave={e => Object.assign(e.currentTarget.style, { background: B.teal, boxShadow: `0 2px 12px ${B.teal}40`, transform: 'translateY(0)' })}
                 >
                   Hubungi Kami
                 </a>
               )}
 
-              {/* Mobile hamburger */}
               {isMobile && (
                 <button
                   onClick={() => setMobileOpen(v => !v)}
@@ -411,8 +417,8 @@ export default function Navbar() {
                   <HamburgerIcon isOpen={mobileOpen} />
                 </button>
               )}
-
             </div>
+
           </div>
         </header>
       </div>

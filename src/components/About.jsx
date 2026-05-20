@@ -1,19 +1,94 @@
+import { useRef, useState, useEffect } from 'react';
+
 export default function About() {
+  const videoRef = useRef(null);
+  const containerRef = useRef(null);
+  // Default di-mute agar browser mengizinkan autoplay
+  const [isMuted, setIsMuted] = useState(true);
+
+  // Intersection Observer untuk auto play/pause saat di-scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Jika 50% elemen terlihat di layar, play video. Jika tidak, pause.
+        if (entry.isIntersecting) {
+          videoRef.current?.play().catch((err) => {
+            console.warn("Autoplay dicegah oleh browser:", err);
+          });
+        } else {
+          videoRef.current?.pause();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, []);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
   return (
     <section id="about" className="py-24 bg-white" aria-labelledby="about-title">
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
 
-        {/* Left image */}
+        {/* Left Video Section */}
         <div className="relative">
-          <div className="h-96 rounded-card bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden" role="img" aria-label="Foto tim">
-            <img
-              src="/assets/img/saya2.JPG"
-              alt="Foto Saya"
-              className="absolute inset-0 w-full h-full object-cover object-center"
+          <div 
+            ref={containerRef}
+            className="group h-96 rounded-card bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden" 
+            role="figure" 
+            aria-label="Video profil tim"
+          >
+            <video
+              ref={videoRef}
+              src="/assets/video/video.mp4"
+              className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+              loop
+              playsInline
+              muted={isMuted}
             />
-            <div className="absolute inset-0 bg-black/10" />
+            {/* Overlay gelap transparan */}
+            <div className="absolute inset-0 bg-black/10 transition-opacity duration-500 group-hover:bg-black/0" />
+            
+            {/* Toggle Sound Button */}
+            <button
+              onClick={toggleMute}
+              className="absolute top-4 right-4 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/20 text-white transition-all duration-300 hover:bg-black/50 hover:scale-110 active:scale-95"
+              aria-label={isMuted ? "Bunyikan suara" : "Matikan suara"}
+            >
+              {isMuted ? (
+                // Icon Mute
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <line x1="23" y1="9" x2="17" y2="15"></line>
+                  <line x1="17" y1="9" x2="23" y2="15"></line>
+                </svg>
+              ) : (
+                // Icon Volume
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                </svg>
+              )}
+            </button>
           </div>
-          <div className="absolute -bottom-5 -right-5 bg-white border border-brand-border rounded-2xl px-5 py-4 shadow-card z-10">
+
+          {/* Badge Pengalaman */}
+          <div className="absolute -bottom-5 -right-5 bg-white border border-brand-border rounded-2xl px-5 py-4 shadow-card z-10 transition-transform duration-500 hover:-translate-y-1">
             <div className="font-display text-2xl font-extrabold text-primary">3+</div>
             <div className="text-xs text-brand-grey mt-0.5">Tahun Pengalaman</div>
           </div>
@@ -40,7 +115,9 @@ export default function About() {
           <div className="bg-brand-dark rounded-2xl px-8 py-7 mt-8 flex flex-wrap items-center justify-between gap-5">
             <div className="flex flex-wrap gap-2 max-w-[260px]">
               {['Creative Developer', 'Scalable Web Apps', 'Cross-platform Dev', 'System Design'].map(tag => (
-                <span key={tag} className="border border-white/15 bg-white/5 text-white/70 rounded-full px-4 py-1.5 text-[0.8125rem]">{tag}</span>
+                <span key={tag} className="border border-white/15 bg-white/5 text-white/70 rounded-full px-4 py-1.5 text-[0.8125rem]">
+                  {tag}
+                </span>
               ))}
             </div>
             <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center shrink-0">
@@ -52,5 +129,5 @@ export default function About() {
         </div>
       </div>
     </section>
-  )
+  );
 }

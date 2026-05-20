@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useScroll, useTransform, motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 // ── ZoomParallax core ──────────────────────────────────────────────────────────
 function ZoomParallax({ images }) {
@@ -53,35 +54,13 @@ function ZoomParallax({ images }) {
 
 // ── Portfolio images (7 max) ───────────────────────────────────────────────────
 const portfolioImages = [
-  // main foto
-  { 
-    src: '/assets/img/web/web1.png',
-    alt: 'Brand & Identity System',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1280&h=720&fit=crop&auto=format&q=80',
-    alt: 'AI Product Dashboard',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1616469829581-73993eb86b02?w=1280&h=720&fit=crop&auto=format&q=80',
-    alt: 'FinTech Mobile Experience',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1542744094-3a31f272c490?w=1280&h=720&fit=crop&auto=format&q=80',
-    alt: 'Startup Brand Package',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop&auto=format&q=80',
-    alt: 'Mountain Campaign',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1280&h=720&fit=crop&auto=format&q=80',
-    alt: 'Minimalist UI Kit',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1280&h=720&fit=crop&auto=format&q=80',
-    alt: 'Nature Brand Identity',
-  },
+  { src: '/assets/img/web/web-alhadi.png',      alt: 'Alhadi' },
+  { src: '/assets/img/web/web-gf2.png',          alt: 'GF2 Racing' },
+  { src: '/assets/img/web/web-resik.png',        alt: 'Resik.id' },
+  { src: '/assets/img/web/web-ads.png',          alt: 'ADS Motor Racing' },
+  { src: '/assets/img/web/web-hutan-kita.png',    alt: 'Hutan Kita' },
+  { src: '/assets/img/web/perpustakaan.png',     alt: 'Perpustakaan Digital' },
+  { src: '/assets/img/web/web-putri-jaya.jpeg',  alt: 'Zalfa Jaya' },
 ];
 
 // ── Section header ─────────────────────────────────────────────────────────────
@@ -116,8 +95,8 @@ function PortfolioFooter() {
           dengan kreativitas komunitas untuk hasil yang berdampak nyata.
         </p>
 
-        <a                        
-          href="portfolio.html"
+        <Link
+          to="/portfolio"
           className="inline-flex items-center bg-white text-gray-900 rounded-full pl-6 pr-2 py-2 gap-4 hover:bg-gray-100 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:-translate-y-1 transition-all duration-300 group"
         >
           <span className="text-sm font-bold tracking-wide">Lihat Semua Proyek</span>
@@ -126,7 +105,7 @@ function PortfolioFooter() {
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </span>
-        </a>
+        </Link>
       </div>
     </div>
   );
