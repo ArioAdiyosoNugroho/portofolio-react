@@ -151,39 +151,6 @@ function ProjectDetailPage() {
         </div>
       </section>
 
-      {/* ── Gallery ── */}
-      <section className="px-6 pb-24 md:px-10 lg:px-16">
-        <div className="mx-auto max-w-6xl">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-display text-2xl font-bold tracking-tight mb-10"
-          >
-            Galeri Proyek
-          </motion.h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {project.images.map((img, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className={`overflow-hidden rounded-2xl border border-white/10 ${i === 0 ? 'sm:col-span-2 sm:row-span-2' : ''}`}
-              >
-                <div className="aspect-[4/3] overflow-hidden bg-slate-900">
-                  <img
-                    src={img}
-                    alt={`${project.title} - ${i + 1}`}
-                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── Results ── */}
       <section className="px-6 pb-24 md:px-10 lg:px-16">
