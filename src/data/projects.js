@@ -216,6 +216,37 @@ export const projects = [
     liveUrl: '#',
     testimonial: null,
   },
+  {
+    slug: 'aplikasi-pos',
+    title: 'Aplikasi POS',
+    subtitle: 'Aplikasi point of sales untuk manajemen transaksi dan inventori',
+    category: 'Web Application',
+    client: 'Personal Project',
+    year: '2024',
+    role: 'Full-Stack Developer',
+    duration: '3 Bulan',
+    src: '/assets/img/web/web-pos.png',
+    alt: 'Aplikasi POS',
+    images: [
+      '/assets/img/web/web-pos.png',
+      '/assets/img/web/web-pos.png',
+      '/assets/img/web/web-pos.png',
+    ],
+    description:
+      'Aplikasi point of sales (POS) berbasis web untuk mengelola transaksi penjualan, manajemen produk, stok inventori, dan laporan keuangan. Dibangun menggunakan Laravel dengan antarmuka yang responsif dan mudah digunakan.',
+    challenge:
+      'Toko-toko kecil masih menggunakan pencatatan manual untuk transaksi dan stok, sehingga sering terjadi kesalahan perhitungan dan kehabisan stok tanpa diketahui.',
+    solution:
+      'Membangun aplikasi POS yang terintegrasi dengan manajemen stok real-time, pencatatan transaksi otomatis, dan laporan penjualan harian/bulanan yang dapat diakses kapan saja.',
+    results: [
+      'Proses transaksi menjadi lebih cepat dan akurat',
+      'Stok barang terpantau secara real-time',
+      'Laporan penjualan otomatis setiap periode',
+    ],
+    techStack: ['Laravel', 'MySQL', 'Bootstrap', 'PHP'],
+    liveUrl: '#',
+    testimonial: null,
+  },
 ]
 
 export function getProjectBySlug(slug) {

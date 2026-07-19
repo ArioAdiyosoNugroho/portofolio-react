@@ -1,45 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
-
 export default function About() {
-  const videoRef = useRef(null);
-  const containerRef = useRef(null);
-  // Default di-mute agar browser mengizinkan autoplay
-  const [isMuted, setIsMuted] = useState(true);
-
-  // Intersection Observer untuk auto play/pause saat di-scroll
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Jika 50% elemen terlihat di layar, play video. Jika tidak, pause.
-        if (entry.isIntersecting) {
-          videoRef.current?.play().catch((err) => {
-            console.warn("Autoplay dicegah oleh browser:", err);
-          });
-        } else {
-          videoRef.current?.pause();
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
-    };
-  }, []);
-
-  const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
   return (
     <section id="about" className="py-24 bg-white" aria-labelledby="about-title">
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -47,44 +6,15 @@ export default function About() {
         {/* Left Video Section */}
         <div className="relative">
           <div 
-            ref={containerRef}
             className="group h-96 rounded-card bg-gradient-to-br from-slate-100 to-slate-200 relative overflow-hidden" 
             role="figure" 
-            aria-label="Video profil tim"
+            aria-label="Foto profil tim"
           >
-            <video
-              ref={videoRef}
-              src="/assets/video/video.mp4"
+            <img
+              src="/assets/img/gwh.png"
+              alt="Arion team"
               className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
-              loop
-              playsInline
-              muted={isMuted}
             />
-            {/* Overlay gelap transparan */}
-            <div className="absolute inset-0 bg-black/10 transition-opacity duration-500 group-hover:bg-black/0" />
-            
-            {/* Toggle Sound Button */}
-            <button
-              onClick={toggleMute}
-              className="absolute top-4 right-4 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/20 text-white transition-all duration-300 hover:bg-black/50 hover:scale-110 active:scale-95"
-              aria-label={isMuted ? "Bunyikan suara" : "Matikan suara"}
-            >
-              {isMuted ? (
-                // Icon Mute
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                  <line x1="23" y1="9" x2="17" y2="15"></line>
-                  <line x1="17" y1="9" x2="23" y2="15"></line>
-                </svg>
-              ) : (
-                // Icon Volume
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                </svg>
-              )}
-            </button>
           </div>
 
           {/* Badge Pengalaman */}
@@ -104,7 +34,7 @@ export default function About() {
             className="font-display font-extrabold leading-tight text-brand-dark mb-5"
             style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)' }}
           >
-            Kenalan dengan ArioAdi:<br />Mitra Desain Kamu
+            Kenalan dengan Arion:<br />Mitra Desain Kamu
           </h2>
           <p className="text-[0.9375rem] text-brand-grey leading-relaxed mb-4">
             Kami bukan sekadar desainer — kami adalah kreator, pemecah masalah, dan sahabat terbaik brand kamu.

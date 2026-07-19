@@ -51,7 +51,7 @@ export default function Hero() {
         {/* Right — image + float cards */}
         <div className="relative">
           <div className="relative w-full aspect-square bg-slate-100 rounded-[24px] border border-slate-200 shadow-inner overflow-hidden">
-            <img src="/assets/img/gwh.png" alt="ArioAdi team" className="w-full h-full object-cover object-center" />
+            <img src="/assets/img/gwh.png" alt="Arion team" className="w-full h-full object-cover object-center" />
           </div>
           {/* stat card top-right */}
           <div className="float-card absolute -top-5 -right-5 bg-white border border-slate-100 rounded-2xl shadow-float p-5 min-w-[180px] z-20">

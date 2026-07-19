@@ -58,9 +58,10 @@ const portfolioImages = [
   { src: '/assets/img/web/web-gf2.png',          alt: 'GF2 Racing' },
   { src: '/assets/img/web/web-resik.png',        alt: 'Resik.id' },
   { src: '/assets/img/web/web-ads.png',          alt: 'ADS Motor Racing' },
-  { src: '/assets/img/web/web-hutan-kita.png',    alt: 'Hutan Kita' },
   { src: '/assets/img/web/perpustakaan.png',     alt: 'Perpustakaan Digital' },
   { src: '/assets/img/web/web-putri-jaya.jpeg',  alt: 'Zalfa Jaya' },
+  { src: '/assets/img/web/web-pos.png',          alt: 'Aplikasi POS' },
+  { src: '/assets/img/web/web-hutan-kita.png',    alt: 'Hutan Kita' },
 ];
 
 // ── Section header ─────────────────────────────────────────────────────────────
@@ -77,7 +78,6 @@ function PortfolioHeader() {
   );
 }
 
-// ── Portfolio footer CTA ───────────────────────────────────────────────────────
 // ── Portfolio footer CTA (Revisi agar tidak terlihat kosong) ───────────────────
 function PortfolioFooter() {
   return (

@@ -17,7 +17,7 @@ import ProjectDetailPage from './pages/ProjectDetailPage'
 
   export default function App() {
     return (
-      <div className="text-brand-dark bg-white antialiased">
+      <div className="text-brand-dark bg-white antialiased overflow-x-hidden relative">
         <Navbar />
         <Routes>
           <Route

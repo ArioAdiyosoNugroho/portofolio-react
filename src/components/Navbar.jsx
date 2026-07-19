@@ -226,7 +226,7 @@ export default function Navbar() {
   }
 
   const barStyle = scrolled ? {
-    width: '100%', maxWidth: isMobile ? '100%' : 880, borderRadius: 9999,
+    width: '100%', maxWidth: isMobile ? '100%' : 880, borderRadius: isMobile ? 24 : 9999,
     background: 'rgba(255,255,255,0.88)',
     backdropFilter: 'blur(28px) saturate(180%)',
     WebkitBackdropFilter: 'blur(28px) saturate(180%)',
@@ -250,8 +250,8 @@ export default function Navbar() {
     justifyContent: 'space-between',
     gap: 16,
     padding: scrolled
-      ? (isMobile ? '10px 16px' : '10px 22px')
-      : (isMobile ? '12px 16px' : '13px 24px'),
+      ? (isMobile ? '10px 20px' : '10px 22px')
+      : (isMobile ? '12px 20px' : '13px 24px'),
     transition: 'padding 0.5s cubic-bezier(0.4,0,0.2,1)',
   }
 
@@ -325,7 +325,7 @@ export default function Navbar() {
                 if (isHome) window.scrollTo({ top: 0, behavior: 'smooth' })
                 else navigate('/')
               }}
-              aria-label="ArioAdi home"
+              aria-label="Arion home"
               style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0 }}
             >
               <div style={{
@@ -340,7 +340,7 @@ export default function Navbar() {
                 fontSize: 18, fontWeight: 800, letterSpacing: '-0.03em',
                 color: B.dark, lineHeight: 1, whiteSpace: 'nowrap',
               }}>
-                Ario<span style={{ color: B.teal }}>Adi</span>
+                Ari<span style={{ color: B.teal }}>on</span>
               </span>
             </a>
 

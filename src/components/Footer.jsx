@@ -13,10 +13,10 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
-                <img src="/assets/img/dev.png" alt="ArioAdi Logo" className="w-full h-full object-cover" />
+                <img src="/assets/img/dev.png" alt="Arion Logo" className="w-full h-full object-cover" />
               </div>
               <span className="font-display font-bold text-[1.1rem] text-white">
-                Ario<span className="text-primary">Adi</span>
+                Ari<span className="text-primary">on</span>
               </span>
             </div>
             <p className="text-sm text-white/35 leading-relaxed">
@@ -67,8 +67,8 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/[0.08] pt-6 flex justify-between items-center flex-wrap gap-3">
-          <span className="text-xs text-white/25">© 2026 ArioAdi. Hak cipta dilindungi.</span>
-          <span className="text-xs text-white/25">Dibuat dengan ♥ oleh ArioAdi</span>
+          <span className="text-xs text-white/25">© 2026 Arion. Hak cipta dilindungi.</span>
+          <span className="text-xs text-white/25">Dibuat dengan ♥ oleh Arion</span>
         </div>
       </div>
     </footer>
